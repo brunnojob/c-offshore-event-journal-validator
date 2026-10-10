@@ -1,0 +1,22 @@
+$ bash -e -o pipefail -c make test && ./app < examples/input.txt
+cc -std=c17 -Wall -Wextra -Werror -pedantic -O2 src/main.c -lm -o app
+./app --self-test
+CRC32 and rollover tests passed
+missing=1 before=4
+records=3 gap_events=1
+
+$ ./app
+missing=1 before=4
+records=3 gap_events=1
+
+$ ./app
+missing input
+
+$ ./app
+record CRC mismatch
+
+$ ./app --unsupported
+unsupported command arguments
+
+$ ./app
+input record too large

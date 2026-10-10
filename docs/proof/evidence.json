@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "repository": "brunnojob/c-offshore-event-journal-validator",
+  "source_commit": "ef0e065e9ac1a80d615c0afd135dd5678b082759",
+  "generated_at": "2026-10-10T02:36:35.738217+00:00",
+  "run_url": "https://github.com/brunnojob/c-offshore-event-journal-validator/actions/runs/38017584961",
+  "inputs_sha256": {
+    ".proof/scenarios.json": "8003d8b1ba0eb6a61f4acfc939a8bd0389039c29ce53768977885bb5bc917da9",
+    "examples/input.txt": "23ac83f266eb5dc2382b68975c079a4012ce798510e5f421c975450cd6d60fb9"
+  },
+  "cases": [
+    {
+      "display": false,
+      "name": "make test && ./app < examples/input.txt",
+      "argv": [
+        "bash",
+        "-e",
+        "-o",
+        "pipefail",
+        "-c",
+        "make test && ./app < examples/input.txt"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "seconds": 0.953,
+      "output": "cc -std=c17 -Wall -Wextra -Werror -pedantic -O2 src/main.c -lm -o app\n./app --self-test\nCRC32 and rollover tests passed\nmissing=1 before=4\nrecords=3 gap_events=1\n",
+      "output_sha256": "c27f05cae7dce51a381f828ad841d1210a21f009b6c1659d7de36fb9b07dfe6e"
+    },
+    {
+      "display": true,
+      "name": "Application demonstration with checked output",
+      "argv": [
+        "./app"
+      ],
+      "exit": 0,
+      "expected_exit": 0,
+      "passed": true,
+      "seconds": 0.051,
+      "output": "missing=1 before=4\nrecords=3 gap_events=1\n",
+      "output_sha256": "fdbda952777bd303fd930676fda8511af72325115e57aab04553e977945dbecd"
+    },
+    {
+      "display": true,
+      "name": "Reject an empty capture",
+      "argv": [
+        "./app"
+      ],
+      "exit": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "seconds": 0.051,
+      "output": "missing input\n",
+      "output_sha256": "e108e9abb244623e01f96efedd4006bbb9cdf4b61840b948d6bf644ffe78bede"
+    },
+    {
+      "display": true,
+      "name": "Reject malformed input",
+      "argv": [
+        "./app"
+      ],
+      "exit": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "seconds": 0.051,
+      "output": "record CRC mismatch\n",
+      "output_sha256": "a27d90bd4ab4643a65d30ed6168833ccc3fe7b06c502a75b13234745bc567434"
+    },
+    {
+      "display": true,
+      "name": "Reject unsupported invocation",
+      "argv": [
+        "./app",
+        "--unsupported"
+      ],
+      "exit": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "seconds": 0.051,
+      "output": "unsupported command arguments\n",
+      "output_sha256": "8671e08a3718f115decd7eb1e7970691e3a2180c5a869d0e9ccd54e6d4fa8a80"
+    },
+    {
+      "display": true,
+      "name": "Reject an oversized input record",
+      "argv": [
+        "./app"
+      ],
+      "exit": 2,
+      "expected_exit": 2,
+      "passed": true,
+      "seconds": 0.051,
+      "output": "input record too large\n",
+      "output_sha256": "d0f1bb9ab1c99d914df3de66c3268650fd8fcb942b2d0f116490dc6c41e6f800"
+    }
+  ],
+  "passed": true
+}
