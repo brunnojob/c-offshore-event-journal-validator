@@ -18,6 +18,7 @@ static size_t fields(char *line, char **out, size_t capacity) {
     char *p = line;
     while (*p) {
         if (count == capacity) fail("too many fields");
+        if (*p == ',') fail("empty field");
         out[count++] = p;
         char *separator = strchr(p, ',');
         if (!separator) break;
@@ -36,12 +37,14 @@ static uint32_t crc32(const unsigned char *p, size_t size) {
 }
 static uint32_t sequence(const char *p) { double v = number(p); if (v < 0 || v > UINT32_MAX || v != floor(v)) fail("invalid sequence"); return (uint32_t)v; }
 int main(int argc, char **argv) {
+    if (argc > 1 && !(argc == 2 && !strcmp(argv[1], "--self-test"))) fail("unsupported command arguments");
     if (argc == 2 && !strcmp(argv[1], "--self-test")) {
         assert(crc32((const unsigned char *)"123456789", 9) == 0xcbf43926); assert(crc32((const unsigned char *)"", 0) == 0);
         assert((uint32_t)(UINT32_MAX + 1u) == 0); puts("CRC32 and rollover tests passed"); return 0;
     }
     char line[2048]; uint32_t last = 0; double last_time = 0; unsigned records = 0, gaps = 0;
     while (fgets(line, sizeof line, stdin)) {
+        if (strlen(line) == sizeof line - 1 && line[sizeof line - 2] != '\n') fail("input record too large");
         line[strcspn(line, "\r\n")] = 0; char *separator = strrchr(line, ','); if (!separator) fail("missing CRC");
         *separator = 0; char *end; errno = 0; unsigned long received = strtoul(separator + 1, &end, 16);
         if (errno || end == separator + 1 || *end || received > UINT32_MAX || crc32((const unsigned char *)line, strlen(line)) != received) fail("record CRC mismatch");
