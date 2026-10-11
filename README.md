@@ -1,5 +1,7 @@
 # c-offshore-event-journal-validator
 
+[View execution evidence](https://brunnojob.github.io/devstart-lab/proofs/c-offshore-event-journal-validator/) · [Run browser demo](https://brunnojob.github.io/devstart-lab/proofs/c-offshore-event-journal-validator/demo/)
+
 Audit sequence continuity, timestamps and CRC32 records from embedded event journals.
 
 ```sh
